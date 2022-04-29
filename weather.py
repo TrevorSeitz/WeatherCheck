@@ -1,18 +1,12 @@
 from wsgiref.util import request_uri
 import requests
-import apiKeys as apiKeys
+import getData 
 
-weather_key = apiKeys.API_KEY
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+incomingData = getData.theData()
+statusCode = incomingData[1]
+data = incomingData[0]
 
-city = input("Enter a city name: ")
-
-request_uri = f"{BASE_URL}?appid={weather_key}&q={city}"
-response = requests.get(request_uri)
-
-if response.status_code == 200:
-    data = response.json()
-    print("Data: ", data)
+if statusCode == 200:
     weather = data['weather'][0]["description"]
     print("Weather: ", weather)
     temperatureC = round(data["main"]["temp"]-273.15, 1)
